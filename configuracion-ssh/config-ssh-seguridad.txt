@@ -79,6 +79,39 @@ systemctl restart ssh
 lo que queremos compartir con el equipo es la ssh-key
 ls~/.ssh/
 id_sra
+
+----------------------------------------------------------------------
+configuraciones opcionales:
+hacer un bkp del archivo de configuracion
+cp sshd_config sshd_config.backup
+
+dependiendo de las regulaciones de la empresa
+-modificacion de puerto:
+ejemplo:
+Port 1025
+
+la duracion de la secion:
+LoginGranceTime 2m to 30 
+
+limitacion de intentos fallidos de autentificacion:
+MaxAuthTries 3
+ 
+deshabilitar contraseña vacia
+PermitEmptyPassword no
+
+habillitar informacion del ultimo log:
+PrintlastLog yes
+
+habilitar intervalo de cliente:
+<un mensaje es enviado al user si no se recibe nada despues de 60 seg>
+ClientAliveInterval 160
+ClientAliveCountMax 2
+
+-Definir un SSH banner file
+
+Restringir acceso a los usuarios 
+
+
 -----------------------------------------------------------------------
 la configuracion del usuario Root y los privilegios del grupo dev se encuentra en
  /Documentacion/configuracion-linux/configuracion-grupos-y-usuarios
