@@ -1,0 +1,109 @@
+git es un versionador de codigo, que significa esto?
+	cuando tenes tu archivo y queres modificarlo al nuevo, no hay muchas formas para mantener las diferentes veriones de tu archivo
+	si tenes un quipo enorme es necesario tener un control sobre todas las veriones
+	con un controlador de versiones podes ver esos cambios y aceptarlos o no.
+
+git es un controlador de versiones distribuido 
+sbn control de V. centralizado- esto significa que tenes todo en un servidor, todo el codigo se guarda en el srv
+git control de V. desentralizado, todos los desarrolladores tienen una copia del codigo y de las branch en su maquina
+
+instalar git: http://git-scm.com
+
+ver version: 
+	git version
+
+configurar git:
+ 	git config --global user.name "pepe"
+	git config --global user.email "pepe@gmail.com"
+
+crear un repositorio manejado por git:
+	git init
+	(se crea un nuevo repositorio/directorio que registra todos los cambios .git)
+
+crear un archivo para ignorar archivos:
+	.gitignore
+	(se pueden poner wildcards * etc)
+
+estados de trabajo
+________			________		____________
+|Working|			|Stagin|		|Repositorio|
+   |		checkout	   |
+   |<----------------------------- |-----------------------|
+   |				   |			   |
+   |	stage			   |			   |
+   |-----------------------------> |			   |
+   |				   |		commit	   |
+   |				   |---------------------->|
+
+
+para ver el estado del nuestros archivos:
+	git status
+nos muestra que archivos estan o no en el stain area
+
+para agregar archivos en el stagin area usamos:
+	git add
+
+una buena practica es agregar un comentario a los commit
+	git commit -m "mensaje"
+
+para ver el historial de todos los commit hechos
+	git log 
+--------------------------------------------------------------------------------------------
+
+la segunda manera de trabajar con repositorios es trabajando con uno que ya existe.
+
+descargar el codigo de un repo externo, mantiene el historial de todo el codigo
+	git clone
+
+se puede hacer de dos formas desde ssh o https
+	git clone "url del repo"
+
+mostrar la diferencias entre el repo y tu maquina
+	git diff 
+
+para subir el codigo al master
+	git push master
+
+como verificar que tenes la ultima version
+	git pull origin master
+
+como crear branchs:
+	que es una branch una rama (traduccion directa) un pequeño camino que se separa del master y que luego se vuevle a sumar al master
+
+	git branch minuevafeature
+
+para entrar en una nueva branch
+	git checkout "branch"
+
+para ver todas las branch
+	git status 
+	git branch
+
+commitear la branch
+	git add -A
+	git commit -m "mensaje"
+	git push -u origin "branch" 
+
+para ver las branch que se hicieron mersh
+	git branch --merged
+	git merge merge "branch"
+
+borrar una branch
+	git push origin --delete "branch"
+	git branch -d "branch" (para borrar la branch del local)
+-----------------------------------------------------------------------------------------------------------------------
+
+como des hacemos un commit del master a una branch
+tenemos que """"""""copiar"""""" en commit ID 
+vamos a la branch que necesitamos 
+	branch checkuot 
+	git cherry-pick "commit ID"
+
+nosotros copiamos el commit este sigue en el master y en la branch
+como eliminamos el commit del master?
+	git reset [soft - mix - hard]
+	git reset --soft "commit ID"
+
+ 	
+nos muestra todo un historial de los commits que se hicieron
+	git reflog
