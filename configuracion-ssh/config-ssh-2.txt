@@ -1,0 +1,21 @@
+1. ssh-copy-id <user>@<ip-svr>: 
+   ssh-copy-id root@192.168.19.1:
+<este comando copia nuentro certificado directamente al archivo de keys autorizadas>
+
+2. ssh -t <user>@<ip> <comando>
+<-t emula una terminal para el comando>
+
+3. ssh -D <puerto> root@ip
+usar ssh como un proxy
+
+4. ssh -X root@ip
+<correr aplicaciones con interfaz grafica del servidor en tu pc> 
+
+5. ssh -L 2020:<ip-svr1>:22 root@ip-svr-2
+<abre el puerto 2020 en mi maquina, se conecta a la ip del svr-1 y abre el puerto 22 para desde ahi conectarse al svr-2, saltando el firewall>
+
+6.ssh -R 2020:localhost:22 root@externssh -R 2020:localhost:22 root@externo
+<tunel ssh reverso> desde el svr habilitar el acceso a alguien de afuera
+
+
+

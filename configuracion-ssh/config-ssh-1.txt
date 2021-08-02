@@ -1,0 +1,30 @@
+poco de historia:
+	años 60 primeras conexiones de maquinas se creo el protocolo TELNET. lo malo de este protocolo es que es insguro, cualquier persona puede ver el trafico. Para resolver este problema se creo SSH (Secure SHell)
+
+<agregar explicacion de como funciona SSH>
+
+Instalando SSH:
+1. apt-get install openssh-server
+	Leyendo lista de paquetes... Hecho
+	Creando árbol de dependencias       
+	Leyendo la información de estado... Hecho
+	openssh-server ya está en su versión más reciente (1:7.6p1-4ubuntu0.3).
+	0 actualizados, 0 nuevos se instalarán, 0 para eliminar y 0 no actualizados.
+
+2.systemctl enable ssh
+<habilitar el servicio ssh>
+
+2.1.1 ssh-keygen
+<este comando nos va a crear un certificado local en nestra maquina local>
+
+2.1.2 cat .ssh/id_rsa.pub
+<copiamos el contenido de la clave publica, nunca de la privada>
+
+2.1.3 vim .ssh/authorized_keys
+<dentro del servidor entramos en este archivo y copiamos nuestro certificado publico>
+
+3. ssh <user>@<IP-SVR> / root@192.168.16.1
+<nos va a preguntar si queremos agregar la fingerprint del svr a nuestra lista de svr confiados, para cuando nos volvamos a conectar no nos vuelva a preguntar sobre la key> 
+
+
+
