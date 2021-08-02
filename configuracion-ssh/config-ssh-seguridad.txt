@@ -1,17 +1,17 @@
 OPEN-SSH-CONFIGURACION-SEGURIDAD
 
-0. ssh - keys - creacion del servidor.
-cuando agregamos una ssh key en la estancia de creacion del servidor, esta key nos conectara con el usuario root y no deberia estar permitido
-al equipo de desarrollo o a algun usuario ajeno de los administradores tener este tipo de acceso.
-asi que primeramente no agregariamos una key ssh
+0. ssh - keys - creación del servidor.
+cuando agregamos una ssh key en la estancia de creación del servidor, esta key nos conectara con el usuario root y no debería estar permitido
+al equipo de desarrollo o a algún usuario ajeno de los administradores tener este tipo de acceso.
+así que primeramente no agregaremos una key ssh
 
-1. como primera prioridad debemos crear un usuario aparte del usuario root. Podemos ver los usuarios con este comando:
+1. Como primera prioridad debemos crear un usuario aparte del usuario root. Podemos ver los usuarios con este comando:
 	cat /etc/passwd
 
 user:x:1001:1001:user,,,:/home/user:/bin/bash
 root:x:0:0:root:/root:/bin/bash
 
--como primera accion importante debemos cancelar la autentificacion remota del usuario root, aparte de crear usuarios para los dev o users que quieran trabajar con el svr
+-como primera acción importante debemos cancelar la autenticación remota del usuario root, aparte de crear usuarios para los dev o users que quieran trabajar con el svr
 
 	useradd -m -s /bin/bash dev
 	passwd dev
@@ -23,9 +23,9 @@ switch user:
 	pwd
 		/home/dev
 
-desabilitar acceso remoto root:
-para esto debemos ver el archivo de configuracion del deamon de ssh
-ssh se maneja con una conexion cliente --> server
+deshabilitar acceso remoto root:
+para esto debemos ver el archivo de configuración del daemon de ssh
+ssh se maneja con una conexión cliente --> servidor
 
 PC user		Server
 cliente-------->server
@@ -33,34 +33,53 @@ cliente-------->server
 	vim /etc/ssh/sshd_config
 ssh<d> representa el deamon, el servicio del server 
 
-las opciones que encontramos aqui no todas son relacionadas con seguridad, aqui se puede cambiar los puertos en donde corre ssh
-lo que buscamos es la opcion:
+las opciones que encontramos aquí no todas son relacionadas con seguridad, aquí se puede cambiar los puertos en donde corre ssh
+lo que buscamos es la opción:
 	PermitRootLogin yes
 
 	PermitRootLogin no 
 
 	sudo systemctl restart ssh
-para que la configuracion este activa se debe reiniciar el servicio ssh
+para que la configuración está activa se debe reiniciar el servicio ssh
 
 Ahora solo podemos acceder como el user Dev
-pero todavia podemos acceder al usuario root usando 
+pero todavía podemos acceder al usuario root usando 
 	su root
 
-esto es algo que tambien queremos deshabilitar
+esto es algo que también queremos deshabilitar
 pero ahora podemos generar ssh keys para los usuarios como por ejemplo user:dev
 
 	:~$ ssh-keygen -t rsa
-<aqui especificamos el algoritmo que estamos usando>
+<aquí especificamos el algoritmo que estamos usando>
 	Generating public/private rsa key pair
-	Enter file in whitch to save the key (/home/<user>/.ssh/id_rsa):
-<aqui nos avisa donde estara guardado la key>
+	Enter file in which to save the key (/home/<user>/.ssh/id_rsa):
+<aquí nos avisa donde estara guardado la key>
 	/home/<user>/.ssh/id_rsa already exists.
 	Overwrite (y/n): y
 <queremos >
-	Enter passphrase (empty fot no passphrase):
-<algunas ssh-key nos permiten usar passphrase para tener una autentificacion de 2 pasos>
+	Enter passphrase (empty for no passphrase):
+<algunas ssh-key nos permiten usar passphrase para tener una autentificación de 2 pasos>
 <si se llegase a comprometer la ssh-key tambien se necesitaria la passphrase para conectarse al svr>
 
-ssh-copy-id dev@ip
-<esto copia directamente nuestra key con el svr>
+<ahora que se configuro las ssh-key entrando desde linux no nos pedira contraseña pero entrando desde un sistema base
+windows (putty) seguira pidiendo contraseña para la autenticacion
+tenemos que deshabilitar la autentificacion por contraseña:
+
+	su root
+	vim /etc/ssh/sshd_config
+#to disable tunneled clear text passwords, change to no here!
+#PasswordAuthentification yes
+#PermitEmptyPassword no
+
+PasswordAuthentification no
+<unicamnte se va a poder acceder por ssh-keys>
+
+systemctl restart ssh 
+
+lo que queremos compartir con el equipo es la ssh-key
+ls~/.ssh/
+id_sra
+-----------------------------------------------------------------------
+la configuracion del usuario Root y los privilegios del grupo dev se encuentra en
+ /Documentacion/configuracion-linux/configuracion-grupos-y-usuarios
 
