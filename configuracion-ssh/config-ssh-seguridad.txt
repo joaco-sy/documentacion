@@ -1,0 +1,66 @@
+OPEN-SSH-CONFIGURACION-SEGURIDAD
+
+0. ssh - keys - creacion del servidor.
+cuando agregamos una ssh key en la estancia de creacion del servidor, esta key nos conectara con el usuario root y no deberia estar permitido
+al equipo de desarrollo o a algun usuario ajeno de los administradores tener este tipo de acceso.
+asi que primeramente no agregariamos una key ssh
+
+1. como primera prioridad debemos crear un usuario aparte del usuario root. Podemos ver los usuarios con este comando:
+	cat /etc/passwd
+
+user:x:1001:1001:user,,,:/home/user:/bin/bash
+root:x:0:0:root:/root:/bin/bash
+
+-como primera accion importante debemos cancelar la autentificacion remota del usuario root, aparte de crear usuarios para los dev o users que quieran trabajar con el svr
+
+	useradd -m -s /bin/bash dev
+	passwd dev
+		new password: <password>
+		retype new password: <password>
+switch user:
+	su <user>
+	su dev
+	pwd
+		/home/dev
+
+desabilitar acceso remoto root:
+para esto debemos ver el archivo de configuracion del deamon de ssh
+ssh se maneja con una conexion cliente --> server
+
+PC user		Server
+cliente-------->server
+
+	vim /etc/ssh/sshd_config
+ssh<d> representa el deamon, el servicio del server 
+
+las opciones que encontramos aqui no todas son relacionadas con seguridad, aqui se puede cambiar los puertos en donde corre ssh
+lo que buscamos es la opcion:
+	PermitRootLogin yes
+
+	PermitRootLogin no 
+
+	sudo systemctl restart ssh
+para que la configuracion este activa se debe reiniciar el servicio ssh
+
+Ahora solo podemos acceder como el user Dev
+pero todavia podemos acceder al usuario root usando 
+	su root
+
+esto es algo que tambien queremos deshabilitar
+pero ahora podemos generar ssh keys para los usuarios como por ejemplo user:dev
+
+	:~$ ssh-keygen -t rsa
+<aqui especificamos el algoritmo que estamos usando>
+	Generating public/private rsa key pair
+	Enter file in whitch to save the key (/home/<user>/.ssh/id_rsa):
+<aqui nos avisa donde estara guardado la key>
+	/home/<user>/.ssh/id_rsa already exists.
+	Overwrite (y/n): y
+<queremos >
+	Enter passphrase (empty fot no passphrase):
+<algunas ssh-key nos permiten usar passphrase para tener una autentificacion de 2 pasos>
+<si se llegase a comprometer la ssh-key tambien se necesitaria la passphrase para conectarse al svr>
+
+ssh-copy-id dev@ip
+<esto copia directamente nuestra key con el svr>
+
